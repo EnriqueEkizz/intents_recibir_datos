@@ -1,15 +1,13 @@
 package com.example.enrique.intents_recibir_datos;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
+import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-
+import android.widget.Toast;
 import java.util.ArrayList;
-import java.util.Collections;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -19,14 +17,24 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //Crear listview
-        ListView listView = findViewById(R.id.lv_pedidos);
+        if (getIntent().getSerializableExtra("listaMenu") != null) {
+            //Crear listview
+            ListView listView = findViewById(R.id.lv_pedidos);
 
-        //Recibiendo arraylist
-        ArrayList<String> listaMenu = (ArrayList<String>) getIntent().getSerializableExtra("listaMenu");
+            //Recibiendo arraylist
+            ArrayList<String> listaMenu = (ArrayList<String>) getIntent().getSerializableExtra("listaMenu");
 
-        //Llenando adaptador
-        ArrayAdapter<String> itemsAdapter = new ArrayAdapter<String>(this, R.layout.ly_item, R.id.tv_item_menu, listaMenu);
-        listView.setAdapter(itemsAdapter);
+            //Llenando adaptador
+            ArrayAdapter<String> itemsAdapter = new ArrayAdapter<>(this, R.layout.ly_item, R.id.tv_item_menu, listaMenu);
+            listView.setAdapter(itemsAdapter);
+        } else {
+            Context context = getApplicationContext();
+            CharSequence text = "No existen pedidos por ahora...";
+            int duration = Toast.LENGTH_SHORT;
+
+            Toast toast = Toast.makeText(context, text, duration);
+            toast.show();
+        }
+
     }
 }
